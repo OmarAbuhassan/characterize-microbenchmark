@@ -1,7 +1,7 @@
 /* types.h
  *
- * Author: Khalid Al-Hawaj
- * Date  : 13 Nov. 2023
+ * Author: Omar Abuhassan
+ * Date  :
  * 
  * This file contains all required types decalartions.
 */
@@ -10,10 +10,11 @@
 #define __INCLUDE_TYPES_H_
 
 typedef struct {
-  byte*   input;
-  byte*   output;
+  float*   input0;
+  float*   input1;
+  float*   output;
 
-  size_t size;
+  int m_size;
 
   int     cpu;
   int     nthreads;
