@@ -85,6 +85,8 @@ int main(int argc, char** argv)
   const char* impl_str      = NULL;
 
   bool help = false;
+  bool verbose = false;
+
   for (int i = 1; i < argc; i++) {
     /* Implementations */
     if (strcmp(argv[i], "-i") == 0 || strcmp(argv[i], "--impl") == 0) {
@@ -141,6 +143,14 @@ int main(int argc, char** argv)
 
       continue;
     }
+    
+    /* Verbose */
+    if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--verbose") == 0)
+    {
+      verbose = true;
+
+      continue;
+    }
 
     /* Help */
     if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
@@ -174,6 +184,7 @@ int main(int argc, char** argv)
     printf("    -s | --size      Size of input and output data (default = %d)\n", data_size);
     printf("         --nruns     Number of runs to the implementation (default = %d)\n", nruns);
     printf("         --stdevs    Number of standard deviation to exclude outliers (default = %d)\n", nstdevs);
+    printf("    -v | --verbose   Print the inputs and output of the matrix\n");
     printf("\n");
 
     exit(help? 0 : 1);
@@ -287,6 +298,22 @@ int main(int argc, char** argv)
     runtimes[i] = __CALC_RUNTIME() / 16;
   }
   printf("Finished\n");
+
+  if (verbose)
+  {
+    printf("\nsrc0");
+    __PRINT_MATRIX(args.input0, m_size, m_size, "%f ");
+
+    printf("\nsrc1");
+    __PRINT_MATRIX(args.input1, m_size, m_size, "%f ");
+
+    printf("\ndest");
+    __PRINT_MATRIX(args.output, m_size, m_size, "%f ");
+
+    printf("\nref");
+    __PRINT_MATRIX(args_ref.output, m_size, m_size, "%f ");
+    printf("\n");
+  }
 
   /* Verfication */
   printf("  * Verifying results .... ");
