@@ -259,7 +259,6 @@ int main(int argc, char** argv)
   /* Setting a guards, which is 0xdeadcafe.
      The guard should not change or be touched. */
   __SET_GUARD(ref , data_size);
-  __SET_GUARD(dest, data_size);
 
   /* Generate ref data */
   /* Arguments for the functions */
@@ -283,7 +282,7 @@ int main(int argc, char** argv)
   args.m_size = m_size;
   args.input0 = src0;
   args.input1 = src1;
-
+  
   args.cpu      = cpu;
   args.nthreads = nthreads;
 
@@ -294,6 +293,8 @@ int main(int argc, char** argv)
   for (int i = 0; i < num_runs; i++) {
     __SET_START_TIME();
     for (int j = 0; j < 16; j++) {
+      args.output = __ALLOC_DATA(float, data_size + sizeof(float));
+      __SET_GUARD(args.output, data_size);
       (*impl)(&args);
     }
     __SET_END_TIME();
@@ -319,8 +320,8 @@ int main(int argc, char** argv)
 
   /* Verfication */
   printf("  * Verifying results .... ");
-  bool match = __CHECK_MATCH(ref, dest, data_size);
-  bool guard = __CHECK_GUARD(     dest, data_size);
+  bool match = __CHECK_MATCH(ref, args.output, data_size / sizeof(float));
+  bool guard = __CHECK_GUARD(args.output, data_size);
   if (match && guard) {
     printf("Success\n");
   } else if (!match && guard) {
@@ -376,7 +377,7 @@ int main(int argc, char** argv)
     for (int i = 0; i < num_runs; i++) {
       if (runtimes_mask[i]) {
         std   += ((runtimes[i] - avg) *
-                  (runtimes[i] - avg));
+                (runtimes[i] - avg));
         std_n += 1;
       }
     }
