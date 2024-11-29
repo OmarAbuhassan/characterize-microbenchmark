@@ -56,7 +56,6 @@
 /* Include application-specific headers */
 #include "include/types.h"
 
-const int SIZE_DATA = 4 * 1024 * 1024;
 
 int main(int argc, char** argv)
 {
@@ -251,9 +250,11 @@ int main(int argc, char** argv)
 
   /* Datasets */
   /* Allocation and initialization */
-  byte* src   = __ALLOC_INIT_DATA(byte, data_size + 0);
-  byte* ref   = __ALLOC_INIT_DATA(byte, data_size + 4);
-  byte* dest  = __ALLOC_DATA     (byte, data_size + 4);
+  int data_size = sizeof(float) * m_size * m_size;
+
+  float *src0 = __ALLOC_INIT_DATA(float, data_size + 0);
+  float *src1 = __ALLOC_INIT_DATA(float, data_size + 0);
+  float *ref = __ALLOC_INIT_DATA(float, data_size + sizeof(float));
 
   /* Setting a guards, which is 0xdeadcafe.
      The guard should not change or be touched. */
@@ -264,8 +265,9 @@ int main(int argc, char** argv)
   /* Arguments for the functions */
   args_t args_ref;
 
-  args_ref.size     = data_size;
-  args_ref.input    = src;
+  args_ref.m_size   = m_size;
+  args_ref.input0   = src0;
+  args_ref.input1   = src1;
   args_ref.output   = ref;
 
   args_ref.cpu      = cpu;
@@ -278,9 +280,9 @@ int main(int argc, char** argv)
   /* Arguments for the function */
   args_t args;
 
-  args.size     = data_size;
-  args.input    = src;
-  args.output   = dest;
+  args.m_size = m_size;
+  args.input0 = src0;
+  args.input1 = src1;
 
   args.cpu      = cpu;
   args.nthreads = nthreads;
@@ -444,8 +446,9 @@ int main(int argc, char** argv)
   printf("\n");
 
   /* Manage memory */
-  free(src);
-  free(dest);
+  free(src0);
+  free(src1);
+  free(args.output);
   free(ref);
 
   /* Finished with statistics */
