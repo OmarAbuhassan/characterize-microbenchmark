@@ -71,7 +71,7 @@ int main(int argc, char** argv)
   int nstdevs  = 3;
 
   /* Data */
-  int data_size = SIZE_DATA;
+  int m_size = 20;
 
   /* Parse arguments */
   /* Function pointers */
@@ -106,10 +106,10 @@ int main(int argc, char** argv)
       continue;
     }
 
-    /* Input/output data size */
-    if (strcmp(argv[i], "-s") == 0 || strcmp(argv[i], "--size") == 0) {
+    /* Input/output data m_size */
+    if (strcmp(argv[i], "-s") == 0 || strcmp(argv[i], "--m_size") == 0) {
       assert (++i < argc);
-      data_size = atoi(argv[i]);
+      m_size = atoi(argv[i]);
 
       continue;
     }
@@ -181,7 +181,7 @@ int main(int argc, char** argv)
     printf("    -h | --help      Print this message\n");
     printf("    -n | --nthreads  Set number of threads available (default = %d)\n", nthreads);
     printf("    -c | --cpu       Set the main CPU for the program (default = %d)\n", cpu);
-    printf("    -s | --size      Size of input and output data (default = %d)\n", data_size);
+    printf("    -s | --m_size    Width or height of squared matrix (default = %d, means %dX%d)\n", m_size, m_size, m_size);
     printf("         --nruns     Number of runs to the implementation (default = %d)\n", nruns);
     printf("         --stdevs    Number of standard deviation to exclude outliers (default = %d)\n", nstdevs);
     printf("    -v | --verbose   Print the inputs and output of the matrix\n");
