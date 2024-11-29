@@ -15,6 +15,17 @@
 /* Specific */
 #define __PRINT_MATCH(x) (x ? "MATCHING" : "MISMATCH")
 
+#define __PRINT_MATRIX(matrix, rows, cols, type) {  \
+    printf("\n");                                   \
+    for (int i = 0; i < (rows); i++) {              \
+        for (int j = 0; j < (cols); j++) {          \
+            printf(type, matrix[i * (cols) + j]);   \
+            printf(" ");                            \
+        }                                           \
+        printf("\n");                               \
+    }                                               \
+}
+
 /* Testing and Statistics Macros */
 #ifndef __APPLE__
 #define __ALLOC_DATA(type, nelems) ({                  \
