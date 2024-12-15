@@ -252,9 +252,9 @@ int main(int argc, char** argv)
   /* Allocation and initialization */
   int data_size = sizeof(float) * m_size * m_size;
 
-  float *src0 = __ALLOC_INIT_DATA(float, data_size + 0);
-  float *src1 = __ALLOC_INIT_DATA(float, data_size + 0);
-  float *ref = __ALLOC_INIT_DATA(float, data_size + sizeof(float));
+  float *src0 = __ALLOC_INIT_SMALL_DATA(float, data_size + 0);
+  float *src1 = __ALLOC_INIT_SMALL_DATA(float, data_size + 0);
+  float *ref = __ALLOC_DATA(float, data_size + sizeof(float));
 
   /* Setting a guards, which is 0xdeadcafe.
      The guard should not change or be touched. */
